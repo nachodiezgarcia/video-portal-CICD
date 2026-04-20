@@ -1,0 +1,58 @@
+import { useEffect, useState } from "react";
+import type { Cursos } from "../../common/models/media.model";
+import { getCourse } from "./course-detail.api";
+import { LessonRow } from "./lesson-row.component";
+import { sumTotalTime } from "./time.utils";
+
+interface Props {
+  courseId: string;
+}
+
+export const CourseDetailComponent = ({ courseId }: Props) => {
+  const [course, setCourse] = useState<Cursos | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getCourse(courseId)
+      .then(setCourse)
+      .catch(() => setError("Error al cargar el curso"))
+      .finally(() => setLoading(false));
+  }, [courseId]);
+
+  if (loading) return <p className="text-[var(--color-text-secondary)]">Cargando curso...</p>;
+  if (error || !course) return <p className="text-[var(--color-error)]">{error}</p>;
+
+  const totalTime = sumTotalTime(course.lecciones.map((l) => l.tiempo));
+
+  return (
+    <section>
+      <h1 className="text-3xl font-bold text-[var(--color-text)] mb-6">{course.nombre}</h1>
+
+      <div className="flex flex-col md:flex-row gap-8 mb-8">
+        <p className="flex-1 text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded p-4">
+          {course.descripcion}
+        </p>
+
+        <div className="flex flex-col items-center gap-2">
+          <div className="border border-[var(--color-border)] rounded overflow-hidden">
+            <img
+              src={course.imagen.url}
+              alt={course.imagen.alt ?? course.nombre}
+              className="w-48 h-48 object-cover"
+            />
+          </div>
+          <span className="text-[var(--color-text)] font-medium border-b border-[var(--color-text)] pb-1">
+            {totalTime}
+          </span>
+        </div>
+      </div>
+
+      <ul className="flex flex-col gap-2 list-none p-0 m-0">
+        {course.lecciones.map((lesson, i) => (
+          <LessonRow key={i} lesson={lesson} courseId={courseId} lessonIndex={i} />
+        ))}
+      </ul>
+    </section>
+  );
+};
