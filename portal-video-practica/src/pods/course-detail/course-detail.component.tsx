@@ -3,6 +3,7 @@ import type { Cursos } from "../../common/models/media.model";
 import { getCourse } from "./course-detail.api";
 import { LessonRow } from "./lesson-row.component";
 import { sumTotalTime } from "./time.utils";
+import { Markdown } from "../../components/markdown";
 
 interface Props {
   courseId: string;
@@ -12,6 +13,7 @@ export const CourseDetailComponent = ({ courseId }: Props) => {
   const [course, setCourse] = useState<Cursos | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedDescription, setExpandedDescription] = useState(false);
 
   useEffect(() => {
     getCourse(courseId)
@@ -30,9 +32,26 @@ export const CourseDetailComponent = ({ courseId }: Props) => {
       <h1 className="text-3xl font-bold text-[var(--color-text)] mb-6">{course.nombre}</h1>
 
       <div className="flex flex-col md:flex-row gap-8 mb-8">
-        <p className="flex-1 text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded p-4">
-          {course.descripcion}
-        </p>
+        <div className="flex-1">
+          <div
+            className="border border-[var(--color-border)] rounded p-4"
+            style={{
+              maxHeight: expandedDescription ? "none" : "18rem",
+              overflow: "hidden",
+            }}
+          >
+            <Markdown content={course.descripcion} className="description" />
+          </div>
+
+          <button
+            type="button"
+            className="mt-2 text-sm font-semibold underline underline-offset-2"
+            style={{ color: "var(--color-link)" }}
+            onClick={() => setExpandedDescription((prev) => !prev)}
+          >
+            {expandedDescription ? "Leer menos..." : "Leer más..."}
+          </button>
+        </div>
 
         <div className="flex flex-col items-center gap-2">
           <div className="border border-[var(--color-border)] rounded overflow-hidden">

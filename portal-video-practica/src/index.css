@@ -13,6 +13,14 @@
   --step-5: clamp(1.9147rem, 1.5679rem + 1.5411vw, 2.9549rem);
   --step-6: clamp(2.154rem, 1.69rem + 2.062vw, 3.5459rem);
 
+  --space-2xs: clamp(0.4rem, 0.35rem + 0.25vw, 0.55rem);
+  --space-xs: clamp(0.65rem, 0.55rem + 0.4vw, 0.85rem);
+  --space-sm: clamp(0.85rem, 0.7rem + 0.5vw, 1.1rem);
+  --space-md: clamp(1.15rem, 0.95rem + 0.7vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --space-xl: clamp(2rem, 1.65rem + 1.3vw, 2.75rem);
+  --space-2xl: clamp(2.75rem, 2.2rem + 1.9vw, 4rem);
+
   --color-primary: #1f2316;
   --color-secondary: #555b52;
   --color-accent: #c9d600;
@@ -149,6 +157,14 @@
   --text-4xl: var(--step-5);
   --text-5xl: var(--step-6);
 
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+
   --color-tbase-500: var(--color-text);
 
   --shadow-sm: 0 1px 2px 0 hsl(from var(--color-primary-700) h s l / 0.05);
@@ -212,7 +228,7 @@
     }
 
     code.hljs {
-      @apply dark:!bg-gray-800;
+      @apply dark:bg-gray-800!;
     }
     code:not(pre code) {
       @apply rounded bg-gray-200 px-1.5 py-1 font-mono text-sm dark:bg-neutral-700;
@@ -266,7 +282,7 @@
     }
 
     code.hljs {
-      @apply dark:!bg-gray-800;
+      @apply dark:bg-gray-800!;
     }
     code:not(pre code) {
       @apply rounded bg-gray-200 px-1.5 py-1 font-mono text-sm dark:bg-neutral-700;
