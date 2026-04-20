@@ -6,22 +6,25 @@ interface Props {
 }
 
 export const CourseCard = ({ course }: Props) => (
-  <li className="border-2 border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] hover:shadow-md transition-shadow">
+  <li className="list-none">
     <Link
       to="/courses/$courseId"
       params={{ courseId: course.id }}
-      className="flex flex-col items-center p-4 no-underline"
+      className="block w-62 no-underline"
     >
-      <div className="w-full border border-[var(--color-border)] rounded overflow-hidden mb-4">
+      <div className="flex flex-col items-center rounded-xl border-2 border-primary bg-surface p-(--space-sm) text-(--color-text)">
+        <div className="mb-(--space-sm) w-full rounded-lg border-2 border-primary bg-surface p-2">
         <img
           src={course.imagen.url}
           alt={course.imagen.alt ?? course.nombre}
-          className="w-full h-48 object-cover"
+            className="h-36 w-full rounded-md object-cover"
         />
+        </div>
+
+        <p className="m-0 text-center text-base font-semibold text-(--color-text)">{course.nombre}</p>
+
+        <hr className="mt-(--space-sm) w-full border-primary" />
       </div>
-      <span className="text-[var(--color-text)] font-medium text-center border-b border-[var(--color-text)] pb-1 w-full">
-        {course.nombre}
-      </span>
     </Link>
   </li>
 );
