@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Campus' },
     ],
-    links: [{ rel: 'icon', href: '/assets/bannaNux_favicon.svg' }],
+    links: [{ rel: 'icon', href: '/bannaNux_favicon.svg' }],
   }),
   shellComponent: RootDocument,
 })
