@@ -1,0 +1,381 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --step--2: clamp(0.8247rem, 0.8445rem + -0.022vw, 0.8395rem);
+  --step--1: clamp(0.9444rem, 0.9294rem + 0.0669vw, 1rem);
+  --step-0: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);
+  --step-1: clamp(1.1953rem, 1.1188rem + 0.3403vw, 1.425rem);
+  --step-2: clamp(1.3447rem, 1.223rem + 0.5411vw, 1.71rem);
+  --step-3: clamp(1.5128rem, 1.3331rem + 0.7988vw, 2.052rem);
+  --step-4: clamp(1.7019rem, 1.4484rem + 1.1266vw, 2.4624rem);
+  --step-5: clamp(1.9147rem, 1.5679rem + 1.5411vw, 2.9549rem);
+  --step-6: clamp(2.154rem, 1.69rem + 2.062vw, 3.5459rem);
+
+  --color-primary: #1f2316;
+  --color-secondary: #555b52;
+  --color-accent: #c9d600;
+  --color-accent-text: #3f4208;
+
+  --color-primary-50: color-mix(in oklab, var(--color-primary) 5%, white);
+  --color-primary-100: color-mix(in oklab, var(--color-primary) 15%, white);
+  --color-primary-200: color-mix(in oklab, var(--color-primary) 30%, white);
+  --color-primary-300: color-mix(in oklab, var(--color-primary) 50%, white);
+  --color-primary-400: color-mix(in oklab, var(--color-primary) 75%, white);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: color-mix(in oklab, var(--color-primary) 85%, black);
+  --color-primary-700: color-mix(in oklab, var(--color-primary) 70%, black);
+  --color-primary-800: color-mix(in oklab, var(--color-primary) 55%, black);
+  --color-primary-900: color-mix(in oklab, var(--color-primary) 40%, black);
+  --color-primary-950: color-mix(in oklab, var(--color-primary) 25%, black);
+
+  --color-secondary-50: color-mix(in oklab, var(--color-secondary) 5%, white);
+  --color-secondary-100: color-mix(in oklab, var(--color-secondary) 15%, white);
+  --color-secondary-200: color-mix(in oklab, var(--color-secondary) 30%, white);
+  --color-secondary-300: color-mix(in oklab, var(--color-secondary) 50%, white);
+  --color-secondary-400: color-mix(in oklab, var(--color-secondary) 75%, white);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: color-mix(in oklab, var(--color-secondary) 85%, black);
+  --color-secondary-700: color-mix(in oklab, var(--color-secondary) 70%, black);
+  --color-secondary-800: color-mix(in oklab, var(--color-secondary) 55%, black);
+  --color-secondary-900: color-mix(in oklab, var(--color-secondary) 40%, black);
+  --color-secondary-950: color-mix(in oklab, var(--color-secondary) 25%, black);
+
+  --color-accent-50: color-mix(in oklab, var(--color-accent) 5%, white);
+  --color-accent-100: color-mix(in oklab, var(--color-accent) 15%, white);
+  --color-accent-200: color-mix(in oklab, var(--color-accent) 30%, white);
+  --color-accent-300: color-mix(in oklab, var(--color-accent) 50%, white);
+  --color-accent-400: color-mix(in oklab, var(--color-accent) 75%, white);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in oklab, var(--color-accent) 85%, black);
+  --color-accent-700: color-mix(in oklab, var(--color-accent) 70%, black);
+  --color-accent-800: color-mix(in oklab, var(--color-accent) 55%, black);
+  --color-accent-900: color-mix(in oklab, var(--color-accent) 40%, black);
+  --color-accent-950: color-mix(in oklab, var(--color-accent) 25%, black);
+
+  /* Backgrounds */
+  --color-background: #f4f6f2;
+  --color-surface: #fbfcfa;
+
+  --color-neutral: #d6d9c8;
+  --color-neutral-content: #1f2316;
+
+  --color-info: #4db2d6;
+  --color-info-text: #0f3e4f;
+  --color-success: #45c59c;
+  --color-success-text: #0a5a47;
+  --color-warning: #e6b347;
+  --color-warning-text: #6b4d0f;
+  --color-error: #e57474;
+  --color-error-text: #5c2a2a;
+
+  --color-bg-page: #f4f6f2;
+  --color-bg-card: #fbfcfa;
+  --color-border: #d6d9c8;
+
+  --color-text-placeholder: #9ea59b;
+  --color-text-on-primary: #ffffff;
+  --color-link: #3a86a3;
+
+  --color-text: #1f2316;
+  --color-text-secondary: #555b52;
+  --color-text-info: #3a86a3;
+  --font-title: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+:root.dark {
+  --color-background: #161810;
+  --color-surface: #1f2316;
+
+  --color-text: #f4f6f2;
+}
+
+@theme {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-tsecondary-500: var(--color-text-secondary);
+  --color-tdescription-500: var(--color-text-info);
+}
+
+@theme {
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
+
+  --color-secondary-50: var(--color-secondary-50);
+  --color-secondary-100: var(--color-secondary-100);
+  --color-secondary-200: var(--color-secondary-200);
+  --color-secondary-300: var(--color-secondary-300);
+  --color-secondary-400: var(--color-secondary-400);
+  --color-secondary-500: var(--color-secondary-500);
+  --color-secondary-600: var(--color-secondary-600);
+  --color-secondary-700: var(--color-secondary-700);
+  --color-secondary-800: var(--color-secondary-800);
+  --color-secondary-900: var(--color-secondary-900);
+  --color-secondary-950: var(--color-secondary-950);
+
+  --color-accent-50: var(--color-accent-50);
+  --color-accent-100: var(--color-accent-100);
+  --color-accent-200: var(--color-accent-200);
+  --color-accent-300: var(--color-accent-300);
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+  --color-accent-700: var(--color-accent-700);
+  --color-accent-800: var(--color-accent-800);
+  --color-accent-900: var(--color-accent-900);
+  --color-accent-950: var(--color-accent-950);
+
+  --font-title: var(--font-title);
+  --font-body: var(--font-body);
+
+  --text-xs: var(--step--2);
+  --text-sm: var(--step--1);
+  --text-base: var(--step-0);
+  --text-lg: var(--step-1);
+  --text-xl: var(--step-2);
+  --text-2xl: var(--step-3);
+  --text-3xl: var(--step-4);
+  --text-4xl: var(--step-5);
+  --text-5xl: var(--step-6);
+
+  --color-tbase-500: var(--color-text);
+
+  --shadow-sm: 0 1px 2px 0 hsl(from var(--color-primary-700) h s l / 0.05);
+  --shadow-md:
+    0 4px 6px -1px hsl(from var(--color-primary-700) h s l / 0.1),
+    0 2px 4px -1px hsl(from var(--color-primary-700) h s l / 0.06);
+  --shadow-lg:
+    0 10px 15px -3px hsl(from var(--color-primary-700) h s l / 0.1),
+    0 4px 6px -2px hsl(from var(--color-primary-700) h s l / 0.05);
+
+  --radius-4xl: 1.75rem;
+  --radius-3xl: 1.5rem;
+  --radius-2xl: 1.25rem;
+}
+
+@layer components {
+  .marked {
+    @apply text-base leading-relaxed;
+    h1 {
+      @apply text-tbase-500/90 mt-8 mb-6 text-3xl leading-tight font-bold;
+    }
+
+    h2 {
+      @apply text-tsecondary-500 mt-8 mb-4 text-2xl leading-tight font-bold;
+    }
+
+    h3 {
+      @apply text-tbase-500/90 mt-6 mb-3 text-xl leading-tight font-semibold;
+    }
+
+    p {
+      @apply text-tsecondary-500 mb-4;
+    }
+
+    img {
+      @apply mt-6 mr-auto mb-6 ml-auto h-auto rounded-lg;
+    }
+
+    ul {
+      @apply mb-4 ml-6 list-disc space-y-1;
+    }
+
+    ol {
+      @apply mb-4 ml-6 list-decimal space-y-1;
+    }
+
+    blockquote {
+      @apply text-tbase-500/70 mt-6 mb-6 border-l-4 border-gray-300 pl-4 italic;
+    }
+
+    hr {
+      @apply my-8 border-gray-300;
+    }
+
+    a {
+      @apply text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-500 underline decoration-[1.4px] underline-offset-2 transition-all;
+    }
+
+    pre {
+      @apply text-sm;
+    }
+
+    code.hljs {
+      @apply dark:!bg-gray-800;
+    }
+    code:not(pre code) {
+      @apply rounded bg-gray-200 px-1.5 py-1 font-mono text-sm dark:bg-neutral-700;
+    }
+  }
+
+  .description {
+    @apply text-base leading-relaxed;
+    h1 {
+      @apply text-tdescription-500 mt-8 mb-6 text-3xl leading-tight font-bold;
+    }
+
+    h2 {
+      @apply text-tbase-500/90 mt-8 mb-4 text-2xl leading-tight font-bold;
+    }
+
+    h3 {
+      @apply text-tbase-500/90 mt-6 mb-3 text-xl leading-tight font-semibold;
+    }
+
+    p {
+      @apply text-tdescription-500 mb-4;
+    }
+
+    img {
+      @apply mt-6 mr-auto mb-6 ml-auto h-auto rounded-lg;
+    }
+
+    ul {
+      @apply mb-4 ml-6 list-disc space-y-1;
+    }
+
+    ol {
+      @apply mb-4 ml-6 list-decimal space-y-1;
+    }
+
+    blockquote {
+      @apply text-tbase-500/70 mt-6 mb-6 border-l-4 border-gray-300 pl-4 italic;
+    }
+
+    hr {
+      @apply my-8 border-gray-300;
+    }
+
+    a {
+      @apply text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-500 underline decoration-[1.4px] underline-offset-2 transition-all;
+    }
+
+    pre {
+      @apply text-sm;
+    }
+
+    code.hljs {
+      @apply dark:!bg-gray-800;
+    }
+    code:not(pre code) {
+      @apply rounded bg-gray-200 px-1.5 py-1 font-mono text-sm dark:bg-neutral-700;
+    }
+  }
+
+  .descriptionCard {
+    @apply w-full;
+
+    > div {
+      @apply flex flex-col p-5 gap-4 rounded-2xl border;
+      @apply text-sm md:text-base leading-tight md:leading-relaxed;
+      @apply h-full min-w-0;
+
+      background-color: color-mix(
+        in oklab,
+        var(--color-surface),
+        transparent 40%
+      );
+      border-color: color-mix(
+        in oklab,
+        var(--color-secondary-600),
+        transparent 90%
+      );
+      color: var(--color-text);
+
+      @apply rounded-tr-none;
+      border-left: 4px solid var(--color-secondary-600);
+      @variant dark {
+        border-left-color: var(--color-primary-400);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        @apply col-span-1 md:col-span-2 font-title font-bold mt-4 mb-2;
+        @apply text-primary-800 dark:text-primary-200 border-b border-surface pb-2;
+        grid-column: 1 / -1;
+        color: color-mix(in oklab, var(--color-primary-600), black 20%);
+      }
+    }
+  }
+
+  .shortInfoComponent {
+    @apply flex flex-col gap-4;
+
+    p {
+      @apply relative p-5 rounded-2xl border transition-all duration-300;
+      @apply bg-surface/30 dark:bg-white/5 shadow-sm;
+
+      border-color: color-mix(
+        in oklab,
+        var(--color-primary-500),
+        transparent 60%
+      );
+      background-color: color-mix(in oklab, var(--color-surface), white 20%);
+
+      color: var(--color-text);
+      @apply text-sm md:text-base leading-relaxed;
+
+      &::before {
+        content: '';
+        @apply absolute left-0 top-1/4 h-1/2 w-1 rounded-r-full;
+        background-color: var(--color-primary-500);
+        opacity: 0.6;
+      }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      @apply font-title font-bold text-primary-800 dark:text-primary-200 mt-6 mb-2 px-1;
+      @apply text-lg md:text-xl;
+    }
+
+    strong {
+      @apply font-bold text-primary-700 dark:text-primary-400;
+    }
+  }
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+  font-weight: 300;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  transition-property: background-color, color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  min-width: 360px;
+  font-size: var(--text-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
+}
