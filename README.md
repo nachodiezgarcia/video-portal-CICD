@@ -48,7 +48,7 @@ La aplicación incluye soporte completo de **light / dark mode**, alternando med
 
 ## 🖼️ Capturas del diseño
 
-### 📐 Mockups (Balsamiq)
+### 📐 Mockups (Quickmock)
 
 **Listado de cursos — Desktop y Mobile**
 
