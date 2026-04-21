@@ -70,13 +70,13 @@
   --color-neutral-content: #1f2316;
 
   --color-info: #4db2d6;
-  --color-info-text: #0f3e4f;
+  --color-text-info: #0f3e4f;
   --color-success: #45c59c;
-  --color-success-text: #0a5a47;
+  --color-text-success: #0a5a47;
   --color-warning: #e6b347;
-  --color-warning-text: #6b4d0f;
+  --color-text-warning: #6b4d0f;
   --color-error: #e57474;
-  --color-error-text: #5c2a2a;
+  --color-text-error: #5c2a2a;
 
   --color-bg-page: #f4f6f2;
   --color-bg-card: #fbfcfa;
@@ -88,7 +88,6 @@
 
   --color-text: #1f2316;
   --color-text-secondary: #555b52;
-  --color-text-info: #3a86a3;
   --font-title: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
@@ -105,6 +104,10 @@
   --color-surface: var(--color-surface);
   --color-tsecondary-500: var(--color-text-secondary);
   --color-tdescription-500: var(--color-text-info);
+  --color-tinfo-500: var(--color-text-info);
+  --color-tsuccess-500: var(--color-text-success);
+  --color-twarning-500: var(--color-text-warning);
+  --color-terror-500: var(--color-text-error);
 }
 
 @theme {
@@ -143,6 +146,18 @@
   --color-accent-800: var(--color-accent-800);
   --color-accent-900: var(--color-accent-900);
   --color-accent-950: var(--color-accent-950);
+
+  --color-info: var(--color-info);
+  --color-text-info: var(--color-text-info);
+
+  --color-success: var(--color-success);
+  --color-text-success: var(--color-text-success);
+
+  --color-warning: var(--color-warning);
+  --color-text-warning: var(--color-text-warning);
+
+  --color-error: var(--color-error);
+  --color-text-error: var(--color-text-error);
 
   --font-title: var(--font-title);
   --font-body: var(--font-body);
