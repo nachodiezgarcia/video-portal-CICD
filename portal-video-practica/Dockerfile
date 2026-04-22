@@ -68,11 +68,11 @@ ARG VITE_OPENROUTER_API_KEY
 ENV VITE_CONTENT_ISLAND_TOKEN=${VITE_CONTENT_ISLAND_TOKEN}
 ENV VITE_OPENROUTER_API_KEY=${VITE_OPENROUTER_API_KEY}
 
-# Compilamos el proyecto. El script "build" de package.json ejecuta:
-#   1. tsr generate  -> genera el arbol de rutas de TanStack Router (routeTree.gen.ts)
-#   2. tsc -b        -> compila TypeScript y verifica tipos
-#   3. vite build    -> empaqueta la app y genera la carpeta dist/
-RUN npm run build
+# Compilamos el proyecto directamente con vite build.
+# El plugin @tanstack/router-plugin genera routeTree.gen.ts automaticamente
+# como parte del proceso de build de Vite, por lo que no necesitamos
+# ejecutar "tsr generate" por separado (ese binario no esta instalado en el contenedor).
+RUN node_modules/.bin/vite build
 
 # -- ETAPA 2: RUNTIME --------------------------------------------------------
 # Usamos nginx:alpine como servidor web para los archivos estaticos.
