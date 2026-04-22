@@ -21,6 +21,7 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
+    "@tanstack/router-cli": "^1.167.22",
     "@eslint/js": "^9.39.4",
     "@tailwindcss/vite": "^4.2.0",
     "@types/node": "^24.12.2",
