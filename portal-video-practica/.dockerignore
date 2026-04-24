@@ -4,8 +4,8 @@
 # Dependencias (se instalan dentro del contenedor con npm ci)
 node_modules
 
-# Salida del build local (se genera dentro del contenedor con npm run build)
-dist
+# dist/ NO se excluye: el build lo genera GitHub Actions antes de docker build,
+# y el Dockerfile lo copia directamente (COPY dist /usr/share/nginx/html).
 
 # Variables de entorno locales (NUNCA deben entrar en la imagen)
 .env
