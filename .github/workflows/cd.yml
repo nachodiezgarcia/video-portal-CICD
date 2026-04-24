@@ -1,8 +1,9 @@
 # =============================================================================
-# CI/CD: Build Docker image → push to GHCR → deploy to Render
+# CD: Build Docker image → push to GHCR → deploy to Render
 # =============================================================================
 #
-# Este workflow se dispara en cada push a la rama "main" y realiza tres pasos:
+# Este workflow se dispara en cada push (merge) a la rama "main" y realiza
+# tres pasos:
 #
 #   1. BUILD & PUSH: Compila la imagen Docker inyectando los secretos VITE_*
 #      como build-args (Vite los incrusta en el bundle JS en tiempo de build).

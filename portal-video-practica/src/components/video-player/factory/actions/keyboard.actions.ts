@@ -39,16 +39,18 @@ export const createKeyboardActions = (
           e.preventDefault();
           actions.seek(currentState.currentTime + 5);
           break;
-        case 'ArrowUp':
+        case 'ArrowUp': {
           e.preventDefault();
           const currentVol = currentState.volume;
           actions.setVolume(Math.min(1, currentVol + 0.1));
           break;
-        case 'ArrowDown':
+        }
+        case 'ArrowDown': {
           e.preventDefault();
           const currentVolDown = currentState.volume;
           actions.setVolume(Math.max(0, currentVolDown - 0.1));
           break;
+        }
         case 'k':
         case 'K':
           e.preventDefault();
@@ -70,20 +72,22 @@ export const createKeyboardActions = (
             actions.toggleFullscreen();
           }
           break;
-        case ',':
+        case ',': {
           e.preventDefault();
           const currentSpeedDown = currentState.playbackRate;
           const currentIndexDown = PLAYBACK_RATES.indexOf(currentSpeedDown);
           const newIndexDown = Math.max(0, currentIndexDown - 1);
           actions.setPlaybackRate(PLAYBACK_RATES[newIndexDown] ?? DEFAULT_PLAYBACK_RATE);
           break;
-        case '.':
+        }
+        case '.': {
           e.preventDefault();
           const currentSpeedUp = currentState.playbackRate;
           const currentIndexUp = PLAYBACK_RATES.indexOf(currentSpeedUp);
           const newIndexUp = Math.min(PLAYBACK_RATES.length - 1, currentIndexUp + 1);
           actions.setPlaybackRate(PLAYBACK_RATES[newIndexUp] ?? DEFAULT_PLAYBACK_RATE);
           break;
+        }
       }
     }
   };

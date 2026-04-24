@@ -1,0 +1,48 @@
+# =============================================================================
+# CI: Lint + unit tests on every pull request to main
+# =============================================================================
+#
+# Este workflow se dispara en cada PR contra "main" y bloquea el merge si algo
+# falla (una vez se active la branch protection en Settings > Branches > main).
+#
+# No compila Docker ni deploya — de eso se encarga cd.yml cuando el PR ya esta
+# mergeado. Aqui solo queremos feedback rapido: lint y tests de Vitest.
+# =============================================================================
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint & unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portal-video-practica
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: portal-video-practica/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test:run

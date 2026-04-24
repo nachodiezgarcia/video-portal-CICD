@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Sun, Moon } from 'lucide-react'
 
 export const ThemeToggle = () => {
-  const [dark, setDark] = useState(false)
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains('dark'))
-  }, [])
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'))
 
   const toggle = () => {
     document.documentElement.classList.toggle('dark')
