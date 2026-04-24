@@ -10,6 +10,8 @@ Este portal permite a los usuarios navegar por un catálogo de cursos, acceder a
 
 El contenido (cursos, lecciones, vídeos e imágenes) es gestionado de forma desacoplada a través de **Content Island**, lo que permite añadir o modificar cursos sin tocar el código.
 
+[Configuración CI/CD proteccion de ramas y diagrama de flujo](./configuracion-Y-fiagrama-de-flujo.md)
+
 ---
 
 ## 🎨 Identidad visual — Logo
