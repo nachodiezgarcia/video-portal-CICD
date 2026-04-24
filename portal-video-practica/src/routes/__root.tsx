@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { type QueryClient } from '@tanstack/react-query'
 import { Header } from '../components/header/header.component'
