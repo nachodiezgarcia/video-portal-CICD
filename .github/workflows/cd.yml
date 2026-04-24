@@ -1,26 +1,24 @@
 # =============================================================================
-# CD: Build Docker image → push to GHCR → deploy to Render
+# CD: Install → Build → Docker push → Deploy to Render
 # =============================================================================
 #
-# Este workflow se dispara en cada push (merge) a la rama "main" y realiza
-# tres pasos:
+# Este workflow se dispara en cada push (merge) a la rama "main" y realiza:
 #
-#   1. BUILD & PUSH: Compila la imagen Docker inyectando los secretos VITE_*
-#      como build-args (Vite los incrusta en el bundle JS en tiempo de build).
-#      La imagen se publica en GitHub Container Registry (GHCR) con dos tags:
-#        - "latest" (para que Render siempre tire de la version mas reciente)
-#        - "sha-<commit>" (trazabilidad: saber exactamente que commit esta en prod)
+#   1. INSTALL:  npm ci  — instala dependencias reproducibles (punto 5)
+#   2. BUILD:    vite build  — compila la SPA con las VITE_* vars (punto 5)
+#   3. DOCKER:   construye la imagen (solo copia dist/) y la publica en GHCR
+#                usando IMAGE_NAME e IMAGE_TAG almacenados como secretos (punto 4)
+#   4. DEPLOY:   llama al deploy hook de Render para arrancar el nuevo contenedor
 #
-#   2. DEPLOY: Llama al deploy hook de Render, que arranca el nuevo contenedor
-#      con la imagen recien publicada. Render hace el rollout automaticamente.
-#
-# Secretos necesarios en el repositorio (Settings > Secrets > Actions):
-#   - VITE_CONTENT_ISLAND_TOKEN  -> token de acceso a Content Island
-#   - VITE_OPENROUTER_API_KEY    -> clave de API de OpenRouter
+# Secretos necesarios en Settings > Secrets > Actions:
+#   - VITE_CONTENT_ISLAND_TOKEN  -> token de Content Island (incrustado en build)
+#   - VITE_OPENROUTER_API_KEY    -> clave de OpenRouter   (incrustado en build)
+#   - IMAGE_NAME                 -> ruta completa de la imagen, ej:
+#                                   ghcr.io/nachodiezgarcia/cicd_orquestadores
+#   - IMAGE_TAG                  -> tag de la imagen, ej: latest
 #   - RENDER_DEPLOY_HOOK_URL     -> URL del deploy hook de Render
-#     (Render Dashboard > tu servicio > Settings > Deploy Hook)
 #
-# El secreto GITHUB_TOKEN lo provee GitHub automaticamente, no hay que crearlo.
+# El secreto GITHUB_TOKEN lo provee GitHub automaticamente.
 # =============================================================================
 
 name: Deploy to Render
@@ -30,60 +28,67 @@ on:
     branches:
       - main
 
-env:
-  REGISTRY: ghcr.io
-  # github.repository devuelve "usuario/nombre-repo" en minusculas
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   build-and-deploy:
-    name: Build, push & deploy
+    name: Install, build, push & deploy
     runs-on: ubuntu-latest
 
-    # Permisos necesarios:
-    #   contents: read   -> clonar el repositorio
-    #   packages: write  -> publicar la imagen en GHCR
     permissions:
       contents: read
       packages: write
 
+    defaults:
+      run:
+        working-directory: portal-video-practica
+
     steps:
       # -----------------------------------------------------------------
-      # 1. Clonamos el repositorio con el codigo fuente
+      # 1. Clonamos el repositorio
       # -----------------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # -----------------------------------------------------------------
-      # 2. Autenticamos en GitHub Container Registry con el token
-      #    automatico de GitHub Actions (no requiere secreto adicional)
+      # 2. Configuramos Node.js con cache de npm
+      # -----------------------------------------------------------------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: portal-video-practica/package-lock.json
+
+      # -----------------------------------------------------------------
+      # 3. Instalamos dependencias de forma limpia y reproducible
+      # -----------------------------------------------------------------
+      - name: Install dependencies
+        run: npm ci
+
+      # -----------------------------------------------------------------
+      # 4. Compilamos la SPA. Las variables VITE_* se inyectan como env
+      #    para que Vite las incruste en el bundle JS durante el build.
+      #    Tras este step, dist/ queda listo en el workspace.
+      # -----------------------------------------------------------------
+      - name: Build
+        env:
+          VITE_CONTENT_ISLAND_TOKEN: ${{ secrets.VITE_CONTENT_ISLAND_TOKEN }}
+          VITE_OPENROUTER_API_KEY: ${{ secrets.VITE_OPENROUTER_API_KEY }}
+        run: node_modules/.bin/vite build
+
+      # -----------------------------------------------------------------
+      # 5. Autenticamos en GitHub Container Registry
       # -----------------------------------------------------------------
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # -----------------------------------------------------------------
-      # 3. Generamos los metadatos (tags y labels) de la imagen Docker.
-      #    - tag "latest" apunta siempre a la ultima imagen de main
-      #    - tag "sha-<commit>" permite rastrear que commit esta en prod
-      # -----------------------------------------------------------------
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=sha,prefix=sha-
-
-      # -----------------------------------------------------------------
-      # 4. Compilamos la imagen y la publicamos en GHCR.
-      #    Los secretos VITE_* se pasan como build-args para que Vite
-      #    los incruste en el bundle JS durante el "npm run build".
-      #    El contexto apunta a portal-video-practica/ donde esta el Dockerfile.
+      # 6. Construimos la imagen Docker (copia dist/ ya generado) y la
+      #    publicamos con el nombre e imagen definidos en los secretos
+      #    IMAGE_NAME e IMAGE_TAG.
       # -----------------------------------------------------------------
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -91,17 +96,10 @@ jobs:
           context: ./portal-video-practica
           file: ./portal-video-practica/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            VITE_CONTENT_ISLAND_TOKEN=${{ secrets.VITE_CONTENT_ISLAND_TOKEN }}
-            VITE_OPENROUTER_API_KEY=${{ secrets.VITE_OPENROUTER_API_KEY }}
+          tags: ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
 
       # -----------------------------------------------------------------
-      # 5. Notificamos a Render para que arranque el nuevo contenedor.
-      #    El deploy hook es una URL privada que Render te proporciona;
-      #    al hacer GET a ella Render hace pull de la imagen "latest" y
-      #    realiza el rollout del nuevo contenedor automaticamente.
+      # 7. Notificamos a Render para que arranque el nuevo contenedor
       # -----------------------------------------------------------------
       - name: Trigger Render deploy
         run: |
