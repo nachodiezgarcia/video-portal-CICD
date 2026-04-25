@@ -205,10 +205,14 @@ Desde la carpeta `portal-video-practica/`:
 
 ## 🔑 Variables de entorno
 
-Crea un archivo `.env` en la raíz de `portal-video-practica/` con tu token de Content Island:
+Crea un archivo `.env` en la raíz de `portal-video-practica/` con tu token de Content Island y su token de acceso a OpenRouter API, para que el chat IA funcione correctamente:
 
 ```sh
 VITE_CONTENT_ISLAND_TOKEN=tu_token_aqui
+```
+
+```sh
+VITE_OPENROUTER_API_KEY=tu_token_aqui
 ```
 
 ---
