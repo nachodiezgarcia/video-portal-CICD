@@ -129,6 +129,18 @@ Cada pod contiene su propio:
 
 ---
 
+## 🐳 Imagen Docker
+
+La aplicación se empaqueta automáticamente como una imagen Docker y se publica en **GitHub Container Registry (GHCR)** tras cada merge a `main` a través del pipeline de CD.
+
+![GHCR Package](screenshots/docker-Image.png)
+
+```sh
+docker pull ghcr.io/nachodiezgarcia/video-portal-cicd:latest
+```
+
+---
+
 ## 📦 Content Island — Modelo de datos
 
 Content Island actúa como el CMS headless del proyecto. Los datos se organizan en dos modelos:
