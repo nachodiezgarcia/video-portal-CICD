@@ -73,7 +73,7 @@ jobs:
         env:
           VITE_CONTENT_ISLAND_TOKEN: ${{ secrets.VITE_CONTENT_ISLAND_TOKEN }}
           VITE_OPENROUTER_API_KEY: ${{ secrets.VITE_OPENROUTER_API_KEY }}
-        run: node_modules/.bin/vite build
+        run: npm run build
 
       # -----------------------------------------------------------------
       # 5. Autenticamos en GitHub Container Registry
