@@ -29,7 +29,7 @@ export const CourseDetailComponent = ({ courseId }: Props) => {
 
   return (
     <section>
-      <h1 className="mb-6 text-3xl font-bold text-primary-700 dark:text-primary-200">{course.nombre}</h1>
+      <h1 className="mb-6 text-3xl font-bold text-primary-700 dark:text-primary-200">Test: {course.nombre}</h1>
 
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         <div className="flex-1">
