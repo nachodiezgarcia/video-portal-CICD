@@ -9,12 +9,20 @@
 # mergeado. Aqui solo queremos feedback rapido: lint y tests de Vitest.
 # =============================================================================
 
+# Nombre que aparece en la pestaña Actions de GitHub.
 name: CI
 
+# ─── DISPARADOR ──────────────────────────────────────────────────────────────
+# Solo se ejecuta cuando se abre o actualiza un Pull Request cuyo destino
+# sea "main". No corre en pushes directos ni en otras ramas.
 on:
   pull_request:
     branches: [main]
 
+# ─── CONCURRENCIA ────────────────────────────────────────────────────────────
+# Evita ejecuciones duplicadas: si se hacen dos pushes seguidos al mismo PR,
+# cancela la ejecución anterior y solo corre la última.
+# Ahorra tiempo y minutos de Actions.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -22,15 +30,26 @@ concurrency:
 jobs:
   test:
     name: Lint & unit tests
+    # Maquina virtual limpia de Ubuntu donde se ejecutaran todos los steps.
     runs-on: ubuntu-latest
+
+    # Todos los comandos "run" del job se ejecutan dentro de esta carpeta,
+    # sin necesidad de poner "cd portal-video-practica" en cada step.
     defaults:
       run:
         working-directory: portal-video-practica
 
     steps:
+      # ── Step 1: Checkout ───────────────────────────────────────────────────
+      # Clona el repositorio dentro del runner.
+      # Sin esto la maquina esta vacia y no tiene el codigo.
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ── Step 2: Setup Node ─────────────────────────────────────────────────
+      # Instala Node.js 20 y activa la cache de npm usando el package-lock.json
+      # como clave. Si el lockfile no ha cambiado, recupera node_modules de
+      # cache en vez de descargarlo todo, acelerando el workflow.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -38,11 +57,24 @@ jobs:
           cache: npm
           cache-dependency-path: portal-video-practica/package-lock.json
 
+      # ── Step 3: Install dependencies ───────────────────────────────────────
+      # Instala las dependencias de forma reproducible y limpia.
+      # A diferencia de "npm install", npm ci:
+      #   - Borra node_modules antes de instalar.
+      #   - No modifica el lockfile.
+      #   - Falla si hay discrepancias con package-lock.json.
+      # Garantiza que CI usa exactamente las mismas versiones que el lockfile.
       - name: Install dependencies
         run: npm ci
 
+      # ── Step 4: Lint ───────────────────────────────────────────────────────
+      # Ejecuta ESLint. Si hay errores de estilo o codigo (variables sin usar,
+      # imports incorrectos, etc.) el step falla y bloquea el merge del PR.
       - name: Lint
         run: npm run lint
 
+      # ── Step 5: Run unit tests ─────────────────────────────────────────────
+      # Ejecuta Vitest en modo one-shot (sin watcher).
+      # Si algun test falla, el job falla y el PR queda bloqueado.
       - name: Run unit tests
         run: npm run test:run
