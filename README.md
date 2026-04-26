@@ -14,6 +14,7 @@ El contenido (cursos, lecciones, vídeos e imágenes) es gestionado de forma des
 
 [Configuración CI/CD proteccion de ramas y diagrama de flujo](./configuracion-Y-fiagrama-de-flujo.md)
 
+[Resumen en detalle CI/CD y diagrama de flujo](./resumen-ci-cd.md)
 ---
 
 ## 🎨 Identidad visual — Logo
