@@ -1,6 +1,6 @@
 # 🎬 Bana Nux — Portal de Video
 
-> Plataforma de cursos de vídeos cortos construida con **React 19**, **TanStack Router** y **Content Island** como CMS headless. Un campus online donde los alumnos pueden explorar cursos, ver lecciones y consultar dudas a un asistente IA integrado.
+> Plataforma de cursos de vídeos cortos construida con **React 19**, **TypeScript**, **TanStack Router** y **Content Island** como CMS headless. Un campus online donde los alumnos pueden explorar cursos, ver lecciones y consultar dudas a un asistente IA integrado.
 
 ---
 
